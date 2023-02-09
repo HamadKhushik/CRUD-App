@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="com.springdemo.util.SortUtils" %>
 
 
 <!DOCTYPE html>
@@ -43,13 +44,34 @@
 				</form:form>
 			
 			
+			<!-- construct a sort name for first name  -->
+			<c:url var="sortLinkFirstName" value="/customer/list">
+			<c:param name="sort" value="<%=Integer.toString(SortUtils.FIRST_NAME) %>"/>
+			</c:url>
+			
+			<!-- construct a sort name for last name  -->
+			<c:url var="sortLinkLastName" value="/customer/list">
+			<c:param name="sort" value="<%=Integer.toString(SortUtils.LAST_NAME) %>"/>
+			</c:url>
+			
+			<!-- construct a sort name for email  -->
+			<c:url var="sortLinkEmail" value="/customer/list">
+			<c:param name="sort" value="<%=Integer.toString(SortUtils.EMAIL) %>"/>
+			</c:url>	
+			
+			
 			<!-- add our html table here -->
 				<table>
 					<tr>
-						<th>First Name</th>
+						<!-- <th>First Name</th>
 						<th>Last Name</th>
 						<th>Email</th>
-						<th>Action</th>
+						<th>Action</th> -->
+						<th><a href="${sortLinkFirstName}"> First Name </a></th>
+						<th><a href="${sortLinkLastName}"> Last Name </a></th>
+						<th><a href="${sortLinkEmail}"> Email </a></th>
+											<th> Action </th>
+						
 					</tr>
 				
 					<!-- Loop over and print our customers -->

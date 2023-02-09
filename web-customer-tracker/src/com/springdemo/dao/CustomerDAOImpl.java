@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.springdemo.entity.Customer;
+import com.springdemo.util.SortUtils;
 
 @Repository
 public class CustomerDAOImpl implements CustomerDAO{
@@ -21,13 +22,34 @@ public class CustomerDAOImpl implements CustomerDAO{
 	
 	@Override
 	// @Transactional (Transactional functionality has been moved to service layer)
-	public List<Customer> getCustomers() {
+	public List<Customer> getCustomers(int theSortField) {
 		
 		// get the current hibernate session
 		Session currentSession = sessionFactory.getCurrentSession();
 		
+		String theFieldName = null;
+		
+		switch(theSortField) {
+		case SortUtils.FIRST_NAME:
+			theFieldName = "firstName";
+			break;
+			
+		case SortUtils.LAST_NAME:
+			theFieldName = "lastName";
+			break;
+		
+		case SortUtils.EMAIL:
+			theFieldName = "email";
+			break;
+		default:
+			// if nothing matches, default to sort by last name
+			theFieldName = "lastName";
+		}
+		
+		String queryString = "from Customer order by " + theFieldName;
+		
 		// create a query ... sort by the last name
-		Query<Customer> theQuery = currentSession.createQuery("from Customer order by lastName", 
+		Query<Customer> theQuery = currentSession.createQuery(queryString, 
 																Customer.class);
 		
 		// execute query and get result list
